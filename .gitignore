@@ -1,0 +1,6 @@
+/_build
+/blib
+/cover_db
+/Build
+/MANIFEST.bak
+/libgetopt-complete-*.tar.gz
