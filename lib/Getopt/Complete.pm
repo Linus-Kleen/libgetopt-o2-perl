@@ -10,7 +10,7 @@ use vars qw($VERSION);
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-$VERSION = '0.2.2'; ##VERSION-TAG
+$VERSION = '0.2.7'; ##VERSION-TAG
 ##------------------------------------------------------------------------------
 use feature ':5.10';
 use English '-no_match_vars';

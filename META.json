@@ -4,7 +4,7 @@
       "Oliver Schieche <schiecheo@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.421",
+   "generated_by" : "Module::Build version 0.4224",
    "license" : [
       "restricted"
    ],
@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "libgetopt-complete-perl",
+   "name" : "libgetopt-complete",
    "prereqs" : {
       "build" : {
          "requires" : {
@@ -25,8 +25,15 @@
             "Module::Build" : "0.30"
          }
       },
+      "runtime" : {
+         "requires" : {
+            "Readonly" : "0"
+         }
+      },
       "test" : {
          "requires" : {
+            "Capture::Tiny" : "0",
+            "Test::MockObject::Extends" : "0",
             "Test::More" : "0"
          }
       }
@@ -34,12 +41,12 @@
    "provides" : {
       "Getopt::Complete" : {
          "file" : "lib/Getopt/Complete.pm",
-         "version" : "v0.2.1"
+         "version" : "v0.2.7"
       },
       "Getopt::Complete::Rule" : {
          "file" : "lib/Getopt/Complete.pm"
       }
    },
    "release_status" : "stable",
-   "version" : "v0.2.1"
+   "version" : "v0.2.7"
 }

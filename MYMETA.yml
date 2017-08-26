@@ -11,7 +11,7 @@ configure_requires:
   ExtUtils::MakeMaker: '0'
   Module::Build: '0.30'
 dynamic_config: 0
-generated_by: 'Module::Build version 0.4218, CPAN::Meta::Converter version 2.142690'
+generated_by: 'Module::Build version 0.4224, CPAN::Meta::Converter version 2.142690'
 license: restrictive
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
