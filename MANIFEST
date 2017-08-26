@@ -1,0 +1,9 @@
+Build.PL
+lib/Getopt/Complete.pm
+MANIFEST			This list of files
+t/.perlcriticrc
+t/00.critic.t
+t/00.use.t
+t/02.getopt.t
+META.yml
+META.json
