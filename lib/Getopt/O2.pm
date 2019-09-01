@@ -9,9 +9,8 @@ use warnings;
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-our $VERSION = '1.0.19';
+our $VERSION = '1.0.20';
 ##------------------------------------------------------------------------------
-use feature ':5.10';
 use English '-no_match_vars';
 use Readonly;
 Readonly my $USAGE_MARGIN => 80;

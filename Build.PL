@@ -14,12 +14,12 @@ my %module_build_args = (
 		'Module::Build' => '0.30',
 	},
 	configure_requires => {
-		'ExtUtils::MakeMaker' => 0,
 		'Module::Build' => '0.30'
 	},
-	license => 'restrictive',
+	license => 'perl',
 	module_name => 'Getopt::O2',
 	requires => {
+		'perl' => '5.10.0',
 		'Readonly' => 0
 	},
 	test_requires => {
@@ -28,7 +28,6 @@ my %module_build_args = (
 		'Test::MockObject::Extends' => 0
 	}
 );
-
 
 my %fallback_build_requires = (
 	'Module::Build' => '0.30',

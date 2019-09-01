@@ -6,7 +6,7 @@
    "dynamic_config" : 1,
    "generated_by" : "Module::Build version 0.4224",
    "license" : [
-      "restricted"
+      "perl_5"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
@@ -21,13 +21,13 @@
       },
       "configure" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : "0",
             "Module::Build" : "0.30"
          }
       },
       "runtime" : {
          "requires" : {
-            "Readonly" : "0"
+            "Readonly" : "0",
+            "perl" : "v5.10.0"
          }
       },
       "test" : {
@@ -41,13 +41,18 @@
    "provides" : {
       "Getopt::O2" : {
          "file" : "lib/Getopt/O2.pm",
-         "version" : "v1.0.19"
+         "version" : "v1.0.20"
       },
       "Getopt::O2::Rule" : {
          "file" : "lib/Getopt/O2.pm"
       }
    },
    "release_status" : "stable",
-   "version" : "v1.0.19",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "v1.0.20",
    "x_serialization_backend" : "JSON::PP version 2.27400_02"
 }
