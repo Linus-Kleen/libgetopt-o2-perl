@@ -8,7 +8,6 @@ use Module::Build 0.30;
 my %module_build_args = (
 	dist_abstract => 'Command line processing with extensive usage generation, object oriented',
 	dist_author => [q(Oliver Schieche <schiecheo@cpan.org>)],
-	dist_name => 'libgetopt-oo-perl',
 	release_status => 'stable',
 
 	build_requires => {

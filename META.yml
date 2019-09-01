@@ -16,7 +16,7 @@ license: restrictive
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
-name: libgetopt-oo-perl
+name: Getopt-OO
 provides:
   Getopt::OO:
     file: lib/Getopt/OO.pm
