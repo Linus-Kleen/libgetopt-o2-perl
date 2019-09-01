@@ -1,5 +1,5 @@
 ---
-abstract: 'Command line processing with extensive usage generation'
+abstract: 'Command line processing with extensive usage generation, object oriented'
 author:
   - 'Oliver Schieche <schiecheo@cpan.org>'
 build_requires:
@@ -16,13 +16,13 @@ license: restrictive
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
-name: libgetopt-complete
+name: libgetopt-oo-perl
 provides:
-  Getopt::Complete:
-    file: lib/Getopt/Complete.pm
+  Getopt::OO:
+    file: lib/Getopt/OO.pm
     version: v1.0.19
-  Getopt::Complete::Rule:
-    file: lib/Getopt/Complete.pm
+  Getopt::OO::Rule:
+    file: lib/Getopt/OO.pm
 requires:
   Readonly: '0'
 version: v1.0.19

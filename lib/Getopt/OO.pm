@@ -1,7 +1,7 @@
 ##------------------------------------------------------------------------------
-## $Id: Complete.pm 887 2016-08-29 12:57:34Z schieche $
+## $Id: OO.pm 887 2016-08-29 12:57:34Z schieche $
 ##------------------------------------------------------------------------------
-package Getopt::Complete;
+package Getopt::OO;
 
 use 5.010;
 use strict;
@@ -9,7 +9,7 @@ use warnings;
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-our $VERSION = '1.0.19'; ##VERSION-TAG
+our $VERSION = '1.0.19';
 ##------------------------------------------------------------------------------
 use feature ':5.10';
 use English '-no_match_vars';
@@ -176,7 +176,7 @@ sub getProgram
 sub getProgramDescription
 	{
 		my $class = ref $_[0];
-		return qq{another example of this programmer\'s lazyness: it forgot the description (and should implement ${class}::getProgramDescription())}
+		return qq{another example of this programmer's lazyness: it forgot the description (and should implement ${class}::getProgramDescription())}
 	}
 ##------------------------------------------------------------------------------
 sub getValue
@@ -236,7 +236,7 @@ sub parseRules ## no critic (Subroutines::ProhibitExcessComplexity)
 
 			$arg = [$arg] unless ref $arg;
 			confess("Invalid rule pattern '$opt'") if $opt !~ $pattern;
-			my $rule = Getopt::Complete::Rule->new($arg, %LAST_PAREN_MATCH);
+			my $rule = Getopt::OO::Rule->new($arg, %LAST_PAREN_MATCH);
 
 			confess(sprintf q{Option spec '%s' redefines long option '%s'}, $opt, $rule->long)
 				if exists $self->{'longOptions'}->{$rule->long};
@@ -290,6 +290,7 @@ sub usage ## no critic (Subroutines::ProhibitExcessComplexity)
 		$show_default = $self->showOptionDefaultValues();
 
 		PROCESS_RULES: while (@rules) {
+			#@type Getopt::OO::Rule
 			$rule = shift @rules;
 
 			unless (defined $rule) {
@@ -367,7 +368,7 @@ sub strrpos
 		return -1
 	}
 ##------------------------------------------------------------------------------
-package Getopt::Complete::Rule; ## no critic (Modules::ProhibitMultiplePackages)
+package Getopt::OO::Rule; ## no critic (Modules::ProhibitMultiplePackages)
 
 use strict;
 use warnings;
@@ -473,12 +474,12 @@ __END__
 
 =head1 NAME
 
-Getopt::Complete - Command line argument processing and automated help generation
+Getopt::OO - Command line argument processing and automated help generation, object oriented
 
 =head1 SYNOPSIS
 
   package MyPackage;
-  use base 'Getopt::Complete';
+  use base 'Getopt::OO';
 
   # return a short descriptive string about the program (appears in --help)
   sub getProgramDescription
@@ -500,7 +501,7 @@ Getopt::Complete - Command line argument processing and automated help generatio
 
 =head1 DESCRIPTION
 
-The C<Getopt::Complete> module implements an extended C<Getopt> class which
+The C<Getopt::OO> module implements an extended C<Getopt> class which
 parses the command line from @ARGV, recognizing and removing specified options
 and their possible values.
 
@@ -629,11 +630,11 @@ Oliver Schieche E<lt>schiecheo@cpan.orgE<gt>
 
 http://perfect-co.de/
 
-$Id: Complete.pm 887 2016-08-29 12:57:34Z schieche $
+$Id: OO.pm 887 2016-08-29 12:57:34Z schieche $
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2013-2017 Oliver Schieche.
+Copyright 2013-2019 Oliver Schieche.
 
 This software is a free library. You can modify and/or distribute it under the
 same terms as Perl itself.

@@ -9,6 +9,6 @@ no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
 use Test::More;
 
-use_ok('Getopt::Complete');
+use_ok('Getopt::OO');
 
 BEGIN {plan tests => 1}
