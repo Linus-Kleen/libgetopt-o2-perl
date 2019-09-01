@@ -18,7 +18,7 @@ my %module_build_args = (
 		'Module::Build' => '0.30'
 	},
 	license => 'restrictive',
-	module_name => 'Getopt::OO',
+	module_name => 'Getopt::O2',
 	requires => {
 		'Readonly' => 0
 	},

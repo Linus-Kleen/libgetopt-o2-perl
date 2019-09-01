@@ -16,13 +16,13 @@ license: restrictive
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
-name: Getopt-OO
+name: Getopt-O2
 provides:
-  Getopt::OO:
-    file: lib/Getopt/OO.pm
+  Getopt::O2:
+    file: lib/Getopt/O2.pm
     version: v1.0.19
-  Getopt::OO::Rule:
-    file: lib/Getopt/OO.pm
+  Getopt::O2::Rule:
+    file: lib/Getopt/O2.pm
 requires:
   Readonly: '0'
 version: v1.0.19

@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "Getopt-OO",
+   "name" : "Getopt-O2",
    "prereqs" : {
       "build" : {
          "requires" : {
@@ -39,12 +39,12 @@
       }
    },
    "provides" : {
-      "Getopt::OO" : {
-         "file" : "lib/Getopt/OO.pm",
+      "Getopt::O2" : {
+         "file" : "lib/Getopt/O2.pm",
          "version" : "v1.0.19"
       },
-      "Getopt::OO::Rule" : {
-         "file" : "lib/Getopt/OO.pm"
+      "Getopt::O2::Rule" : {
+         "file" : "lib/Getopt/O2.pm"
       }
    },
    "release_status" : "stable",

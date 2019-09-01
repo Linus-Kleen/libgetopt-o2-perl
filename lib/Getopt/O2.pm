@@ -1,7 +1,7 @@
 ##------------------------------------------------------------------------------
-## $Id: OO.pm 887 2016-08-29 12:57:34Z schieche $
+## $Id: O2.pm 887 2016-08-29 12:57:34Z schieche $
 ##------------------------------------------------------------------------------
-package Getopt::OO;
+package Getopt::O2;
 
 use 5.010;
 use strict;
@@ -236,7 +236,7 @@ sub parseRules ## no critic (Subroutines::ProhibitExcessComplexity)
 
 			$arg = [$arg] unless ref $arg;
 			confess("Invalid rule pattern '$opt'") if $opt !~ $pattern;
-			my $rule = Getopt::OO::Rule->new($arg, %LAST_PAREN_MATCH);
+			my $rule = Getopt::O2::Rule->new($arg, %LAST_PAREN_MATCH);
 
 			confess(sprintf q{Option spec '%s' redefines long option '%s'}, $opt, $rule->long)
 				if exists $self->{'longOptions'}->{$rule->long};
@@ -290,7 +290,7 @@ sub usage ## no critic (Subroutines::ProhibitExcessComplexity)
 		$show_default = $self->showOptionDefaultValues();
 
 		PROCESS_RULES: while (@rules) {
-			#@type Getopt::OO::Rule
+			#@type Getopt::O2::Rule
 			$rule = shift @rules;
 
 			unless (defined $rule) {
@@ -368,7 +368,7 @@ sub strrpos
 		return -1
 	}
 ##------------------------------------------------------------------------------
-package Getopt::OO::Rule; ## no critic (Modules::ProhibitMultiplePackages)
+package Getopt::O2::Rule; ## no critic (Modules::ProhibitMultiplePackages)
 
 use strict;
 use warnings;
@@ -474,12 +474,12 @@ __END__
 
 =head1 NAME
 
-Getopt::OO - Command line argument processing and automated help generation, object oriented
+Getopt::O2 - Command line argument processing and automated help generation, object oriented
 
 =head1 SYNOPSIS
 
   package MyPackage;
-  use base 'Getopt::OO';
+  use base 'Getopt::O2';
 
   # return a short descriptive string about the program (appears in --help)
   sub getProgramDescription
@@ -501,7 +501,7 @@ Getopt::OO - Command line argument processing and automated help generation, obj
 
 =head1 DESCRIPTION
 
-The C<Getopt::OO> module implements an extended C<Getopt> class which
+The C<Getopt::O2> module implements an extended C<Getopt> class which
 parses the command line from @ARGV, recognizing and removing specified options
 and their possible values.
 
