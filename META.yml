@@ -11,7 +11,7 @@ configure_requires:
   ExtUtils::MakeMaker: '0'
   Module::Build: '0.30'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4224, CPAN::Meta::Converter version 2.142690'
+generated_by: 'Module::Build version 0.4224, CPAN::Meta::Converter version 2.150010'
 license: restrictive
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -20,9 +20,10 @@ name: libgetopt-complete
 provides:
   Getopt::Complete:
     file: lib/Getopt/Complete.pm
-    version: v0.2.7
+    version: v1.0.19
   Getopt::Complete::Rule:
     file: lib/Getopt/Complete.pm
 requires:
   Readonly: '0'
-version: v0.2.7
+version: v1.0.19
+x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

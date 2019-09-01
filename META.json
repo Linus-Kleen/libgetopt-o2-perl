@@ -41,12 +41,13 @@
    "provides" : {
       "Getopt::Complete" : {
          "file" : "lib/Getopt/Complete.pm",
-         "version" : "v0.2.7"
+         "version" : "v1.0.19"
       },
       "Getopt::Complete::Rule" : {
          "file" : "lib/Getopt/Complete.pm"
       }
    },
    "release_status" : "stable",
-   "version" : "v0.2.7"
+   "version" : "v1.0.19",
+   "x_serialization_backend" : "JSON::PP version 2.27400_02"
 }
