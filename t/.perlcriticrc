@@ -83,6 +83,9 @@ add_themes = docs
 [-RegularExpressions::RequireLineBoundaryMatching]
 
 [Subroutines::ProhibitBuiltinHomonyms]
+[Subroutines::ProhibitExcessComplexity]
+add_themes = schieche
+max_mccabe = 10
 [-Subroutines::ProhibitSubroutinePrototypes]
 [-Subroutines::RequireArgUnpacking]
 
@@ -102,7 +105,7 @@ add_themes = schieche
 
 [Variables::ProhibitLocalVars]
 [Variables::ProhibitPackageVars]
-[-Variables::ProhibitPunctuationVars]
+[Variables::ProhibitPunctuationVars]
 [Variables::ProhibitReusedNames]
 [Variables::ProhibitUnusedVariables]
 [Variables::RequireNegativeIndices]

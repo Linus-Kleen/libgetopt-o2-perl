@@ -81,7 +81,7 @@
 ^MANIFEST\.SKIP
 
 # Avoid archives of this distribution
-\blibgetopt-complete-
+\bGetopt-O2-
 
 # Avoid test/build artifacts
 ^blib

@@ -1,16 +1,15 @@
 ##------------------------------------------------------------------------------
-## $Id: Complete.pm 887 2016-08-29 12:57:34Z schieche $
+## $Id: O2.pm 887 2016-08-29 12:57:34Z schieche $
 ##------------------------------------------------------------------------------
-package Getopt::Complete;
+package Getopt::O2;
 
 use 5.010;
 use strict;
 use warnings;
-use vars qw($VERSION);
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-$VERSION = '0.2.7'; ##VERSION-TAG
+our $VERSION = '1.0.19';
 ##------------------------------------------------------------------------------
 use feature ':5.10';
 use English '-no_match_vars';
@@ -40,7 +39,7 @@ sub getopt ## no critic (Subroutines::ProhibitExcessComplexity)
 		my $args = shift;
 		my ($arg,$key,$rule,%context,@arguments);
 
-		$self->{options} = {%$dest};
+		$self->{'options'} = {%$dest};
 		$self->parseRules();
 
 		PROCESS_ARGUMENTS: while (@ARGV) {
@@ -56,10 +55,10 @@ sub getopt ## no critic (Subroutines::ProhibitExcessComplexity)
 
 			if ($arg !~ /^--/) {
 				$key = (substr $arg, 1, 1);
-				$rule = $self->{shortOptions}->{$key};
+				$rule = $self->{'shortOptions'}->{$key};
 				$self->error('No such option "-%s"', $key)
 					unless defined $rule;
-				$rule = $self->{longOptions}->{$rule};
+				$rule = $self->{'longOptions'}->{$rule};
 
 				if (length $arg > 2) {
 					if ($rule->type) { ## no critic (ControlStructures::ProhibitDeepNests)
@@ -76,33 +75,33 @@ sub getopt ## no critic (Subroutines::ProhibitExcessComplexity)
 					unshift @ARGV, $arg;
 				}
 
-				$rule = $self->{longOptions}->{$key};
+				$rule = $self->{'longOptions'}->{$key};
 				unless (defined $rule) {
 					$self->error('No such option "--%s"', $key)
 						if 0 != (index $key, 'no-');
 					$key = (substr $key, 3);
-					$rule = $self->{longOptions}->{$key};
+					$rule = $self->{'longOptions'}->{$key};
 
 					$self->error('No such option "--no-%s" or negatable "--%s"', $key, $key)
 						unless defined $rule && $rule->negatable;
-					$rule->{_negate} = 1;
+					$rule->{'_negate'} = 1;
 				}
 			}
 
 			if (defined $rule->context) {
-				foreach (@{$rule->context->{need}}) {
+				foreach (@{$rule->context->{'need'}}) {
 					$self->error('Option "--%s" cannot be used in this context.', $rule->long)
 						unless exists $context{$_};
 				}
 
-				delete $context{$_} foreach @{$rule->context->{clear}};
-				$context{$_} = 1 foreach @{$rule->context->{set}};
+				delete $context{$_} foreach @{$rule->context->{'clear'}};
+				$context{$_} = 1 foreach @{$rule->context->{'set'}};
 			}
 
 			if ($rule->multiple) {
-				$self->{options}->{$rule->long} = 0
-					unless exists $self->{options}->{$rule->long};
-				++$self->{options}->{$rule->long};
+				$self->{'options'}->{$rule->long} = 0
+					unless exists $self->{'options'}->{$rule->long};
+				++$self->{'options'}->{$rule->long};
 				next PROCESS_ARGUMENTS;
 			} elsif(!defined $rule->type) {
 				$arg = undef;
@@ -111,12 +110,12 @@ sub getopt ## no critic (Subroutines::ProhibitExcessComplexity)
 				$self->error('Option "--%s" needs a mandatory value.', $rule->long)
 					unless defined $arg;
 
-				delete $self->{options}->{$rule->long}
+				delete $self->{'options'}->{$rule->long}
 					if $rule->is_unused;
 				$rule->mark_used;
 
-				$self->{options}->{$rule->long} = []
-					if $rule->is_list && !defined $self->{options}->{$rule->long};
+				$self->{'options'}->{$rule->long} = []
+					if $rule->is_list && !defined $self->{'options'}->{$rule->long};
 
 				given($rule->type) {
 					when('s') {
@@ -136,10 +135,10 @@ sub getopt ## no critic (Subroutines::ProhibitExcessComplexity)
 
 				if ($rule->is_list) {
 					if ('?' ne $rule->type) { ## no critic (ControlStructures::ProhibitDeepNests)
-						push @{$self->{options}->{$rule->long}}, $arg;
+						push @{$self->{'options'}->{$rule->long}}, $arg;
 					} else {
-						push @{$self->{options}->{$rule->long}}, $arg
-							unless ($rule->keep_unique && $arg ~~ @{$self->{options}->{$rule->long}});
+						push @{$self->{'options'}->{$rule->long}}, $arg
+							unless ($rule->keep_unique && $arg ~~ @{$self->{'options'}->{$rule->long}});
 					}
 					next PROCESS_ARGUMENTS;
 				}
@@ -148,16 +147,16 @@ sub getopt ## no critic (Subroutines::ProhibitExcessComplexity)
 			if (defined $rule->action) {
 				$arg = $rule->action->($arg, $key, $rule);
 			} else {
-				$arg = $rule->{_negate} ? '' : 1
+				$arg = $rule->{'_negate'} ? '' : 1
 					unless defined $arg;
 			}
 
-			$self->{options}->{$rule->long} = $arg;
+			$self->{'options'}->{$rule->long} = $arg;
 		}
 
-		%$dest = %{$self->{options}};
+		%$dest = %{$self->{'options'}};
 		@$args = @arguments if ref $args;
-		$self->{options} = {};
+		$self->{'options'} = {};
 		return $self
 	}
 ##------------------------------------------------------------------------------
@@ -177,7 +176,7 @@ sub getProgram
 sub getProgramDescription
 	{
 		my $class = ref $_[0];
-		return qq{another example of this programmer\'s lazyness: it forgot the description (and should implement ${class}::getProgramDescription())}
+		return qq{another example of this programmer's lazyness: it forgot the description (and should implement ${class}::getProgramDescription())}
 	}
 ##------------------------------------------------------------------------------
 sub getValue
@@ -237,22 +236,22 @@ sub parseRules ## no critic (Subroutines::ProhibitExcessComplexity)
 
 			$arg = [$arg] unless ref $arg;
 			confess("Invalid rule pattern '$opt'") if $opt !~ $pattern;
-			my $rule = Getopt::Complete::Rule->new($arg, %LAST_PAREN_MATCH);
+			my $rule = Getopt::O2::Rule->new($arg, %LAST_PAREN_MATCH);
 
 			confess(sprintf q{Option spec '%s' redefines long option '%s'}, $opt, $rule->long)
-				if exists $self->{longOptions}->{$rule->long};
+				if exists $self->{'longOptions'}->{$rule->long};
 
 			if (defined $rule->short) {
 				confess(sprintf q{Option spec '%s' redefines short option '%s'}, $opt, $rule->short)
-					if exists $self->{shortOptions}->{$rule->short};
-				$self->{shortOptions}->{$rule->short} = $rule->long;
+					if exists $self->{'shortOptions'}->{$rule->short};
+				$self->{'shortOptions'}->{$rule->short} = $rule->long;
 			}
 
 			if (defined $rule->default) {
-				$self->{options}->{$rule->long} = $rule->default;
+				$self->{'options'}->{$rule->long} = $rule->default;
 			}
 
-			$self->{longOptions}->{$rule->long} = $rule;
+			$self->{'longOptions'}->{$rule->long} = $rule;
 			push @parsed, $rule if wantarray
 		}
 
@@ -270,7 +269,7 @@ sub usage ## no critic (Subroutines::ProhibitExcessComplexity)
 		my $self = shift;
 		my ($exitCode,$message,@args) = @_;
 
-		if ($message) {
+		if (defined $message) {
 			$message = sprintf "Error: $message", @args;
 		} else {
 			$message = sprintf '%s - %s', $self->getProgram(), $self->getProgramDescription();
@@ -281,8 +280,8 @@ sub usage ## no critic (Subroutines::ProhibitExcessComplexity)
 		printf STDERR "\nUsage: %s [options...]\n\nValid options:\n\n", $self->getProgram();
 
 		## no critic (Variables::ProhibitLocalVars)
-		local $self->{longOptions} = undef;
-		local $self->{shortOptions} = undef;
+		local $self->{'longOptions'} = undef;
+		local $self->{'shortOptions'} = undef;
 		## use critic
 
 		my @rules = $self->parseRules();
@@ -291,6 +290,7 @@ sub usage ## no critic (Subroutines::ProhibitExcessComplexity)
 		$show_default = $self->showOptionDefaultValues();
 
 		PROCESS_RULES: while (@rules) {
+			#@type Getopt::O2::Rule
 			$rule = shift @rules;
 
 			unless (defined $rule) {
@@ -368,7 +368,7 @@ sub strrpos
 		return -1
 	}
 ##------------------------------------------------------------------------------
-package Getopt::Complete::Rule; ## no critic (Modules::ProhibitMultiplePackages)
+package Getopt::O2::Rule; ## no critic (Modules::ProhibitMultiplePackages)
 
 use strict;
 use warnings;
@@ -391,55 +391,55 @@ sub new ## no critic (Subroutines::ProhibitExcessComplexity)
 		my ($arg, %options) = @_;
 		my (%rule);
 
-		$rule{long} = $options{long};
-		$rule{short} = $options{short} if exists $options{short};
+		$rule{'long'} = $options{'long'};
+		$rule{'short'} = $options{'short'} if exists $options{'short'};
 
-		$rule{negatable} = 1 if $options{negatable};
-		if ($options{multiple}) {
-			$rule{multiple} = 1
-		} elsif ($options{type}) {
-			$rule{type} = (substr $options{type}, 0, 1);
-			$rule{is_list} = ~(index $options{type}, '@');
-			$rule{keep_unique} = $options{keep_unique} // 1
-				if $rule{is_list};
+		$rule{'negatable'} = 1 if $options{'negatable'};
+		if ($options{'multiple'}) {
+			$rule{'multiple'} = 1
+		} elsif ($options{'type'}) {
+			$rule{'type'} = (substr $options{'type'}, 0, 1);
+			$rule{'is_list'} = ~(index $options{'type'}, '@');
+			$rule{'keep_unique'} = $options{'keep_unique'} // 1
+				if $rule{'is_list'};
 		}
 
-		$rule{help} = shift @$arg;
-		$rule{help} =~ s/^\s+|\s+$//g;
-		$rule{help} =~ s/\s+/ /g;
-		$rule{help} .= '.' if $rule{help} !~ /[.]$/;
+		$rule{'help'} = shift @$arg;
+		$rule{'help'} =~ s/^\s+|\s+$//g;
+		$rule{'help'} =~ s/\s+/ /g;
+		$rule{'help'} .= '.' if $rule{'help'} !~ /[.]$/;
 
 		if (@$arg) {
-			$rule{action} = shift @$arg
+			$rule{'action'} = shift @$arg
 				if 'CODE' eq ref $arg->[0];
 			confess('Invalid rule options; the remainder is a list with uneven members')
 				if 0 != (@$arg % 2);
 			%rule = (%rule, @$arg);
 		}
 
-		if (defined $rule{context}) {
-			$rule{context} = [split /,/, $rule{context}];
-			$rule{context} = {
-				set => [map {(substr $_, 1)} grep {/^[+]/} @{$rule{context}}],
-				clear => [map {(substr $_, 1)} grep {/^-/} @{$rule{context}}],
-				need => [grep {/^[^+-]/} @{$rule{context}}],
+		if (defined $rule{'context'}) {
+			$rule{'context'} = [split /,/, $rule{'context'}];
+			$rule{'context'} = {
+				set => [map {(substr $_, 1)} grep {/^[+]/} @{$rule{'context'}}],
+				clear => [map {(substr $_, 1)} grep {/^-/} @{$rule{'context'}}],
+				need => [grep {/^[^+-]/} @{$rule{'context'}}],
 			};
 		}
 
-		$rule{_used} = 0;
+		$rule{'_used'} = 0;
 
 		return bless \%rule, $class
 	}
 ##------------------------------------------------------------------------------
 sub is_unused
 	{
-		return !shift->{_used};
+		return !shift->{'_used'};
 	}
 ##------------------------------------------------------------------------------
 sub mark_used
 	{
 		my $self = shift;
-		$self->{_used} = 1;
+		$self->{'_used'} = 1;
 		return $self;
 	}
 ##------------------------------------------------------------------------------
@@ -448,21 +448,21 @@ sub help
 		my $self = shift;
 		my $show_default = shift;
 
-		unless (defined $self->{type}) { # flags
-			return $self->{help};
-		} elsif ('?' ne $self->{type}) { # anything but ENUM
-			my $helpstr = $self->{help};
+		unless (defined $self->{'type'}) { # flags
+			return $self->{'help'};
+		} elsif ('?' ne $self->{'type'}) { # anything but ENUM
+			my $helpstr = $self->{'help'};
 
-			return $helpstr unless $show_default && defined $self->{default};
+			return $helpstr unless $show_default && defined $self->{'default'};
 
 			$helpstr =~ s/\s*[.]\s*$//;
-			return sprintf '%s (default: "%s").', $helpstr, $self->{default};
+			return sprintf '%s (default: "%s").', $helpstr, $self->{'default'};
 		} else {
 			my @values = map {qq{"$_"}} @{$self->values};
-			my $default_value = ($show_default && defined $self->{default})
-				? (sprintf ' [default: "%s"]', $self->{default})
+			my $default_value = ($show_default && defined $self->{'default'})
+				? (sprintf ' [default: "%s"]', $self->{'default'})
 				: '';
-			return $self->{help} . (sprintf ' (ARG must be %s or %s)%s',
+			return $self->{'help'} . (sprintf ' (ARG must be %s or %s)%s',
 				(join ', ', @values[0..$#values-1]), $values[-1], $default_value);
 		}
 	}
@@ -474,12 +474,12 @@ __END__
 
 =head1 NAME
 
-Getopt::Complete - Command line argument processing and automated help generation
+Getopt::O2 - Command line argument processing and automated help generation, object oriented
 
 =head1 SYNOPSIS
 
   package MyPackage;
-  use base 'Getopt::Complete';
+  use base 'Getopt::O2';
 
   # return a short descriptive string about the program (appears in --help)
   sub getProgramDescription
@@ -501,7 +501,7 @@ Getopt::Complete - Command line argument processing and automated help generatio
 
 =head1 DESCRIPTION
 
-The C<Getopt::Complete> module implements an extended C<Getopt> class which
+The C<Getopt::O2> module implements an extended C<Getopt> class which
 parses the command line from @ARGV, recognizing and removing specified options
 and their possible values.
 
@@ -630,11 +630,11 @@ Oliver Schieche E<lt>schiecheo@cpan.orgE<gt>
 
 http://perfect-co.de/
 
-$Id: Complete.pm 887 2016-08-29 12:57:34Z schieche $
+$Id: O2.pm 888 2019-09-01 20:36:34Z schieche $
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2013-2017 Oliver Schieche.
+Copyright 2013-2019 Oliver Schieche.
 
 This software is a free library. You can modify and/or distribute it under the
 same terms as Perl itself.

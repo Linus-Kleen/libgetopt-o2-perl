@@ -1,5 +1,5 @@
 Build.PL
-lib/Getopt/Complete.pm
+lib/Getopt/O2.pm
 MANIFEST			This list of files
 META.json
 META.yml

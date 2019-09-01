@@ -3,4 +3,8 @@
 /cover_db
 /Build
 /MANIFEST.bak
-/libgetopt-complete-*.tar.gz
+/Getopt-O2-*.tar.gz
+/Build.bat
+/.idea/
+/MYMETA.json
+/MYMETA.yml

@@ -35,10 +35,10 @@ BEGIN {
 		CORE::exit($_[0] // 0);
 	};
 
-	use_ok('Getopt::Complete');
+	use_ok('Getopt::O2');
 }
 
-use parent 'Getopt::Complete';
+use parent 'Getopt::O2';
 
 # Usage called?
 {

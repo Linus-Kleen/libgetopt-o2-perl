@@ -1,5 +1,5 @@
 {
-   "abstract" : "Command line processing with extensive usage generation",
+   "abstract" : "Command line processing with extensive usage generation, object oriented",
    "author" : [
       "Oliver Schieche <schiecheo@cpan.org>"
    ],
@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "libgetopt-complete",
+   "name" : "Getopt-O2",
    "prereqs" : {
       "build" : {
          "requires" : {
@@ -39,14 +39,15 @@
       }
    },
    "provides" : {
-      "Getopt::Complete" : {
-         "file" : "lib/Getopt/Complete.pm",
-         "version" : "v0.2.7"
+      "Getopt::O2" : {
+         "file" : "lib/Getopt/O2.pm",
+         "version" : "v1.0.19"
       },
-      "Getopt::Complete::Rule" : {
-         "file" : "lib/Getopt/Complete.pm"
+      "Getopt::O2::Rule" : {
+         "file" : "lib/Getopt/O2.pm"
       }
    },
    "release_status" : "stable",
-   "version" : "v0.2.7"
+   "version" : "v1.0.19",
+   "x_serialization_backend" : "JSON::PP version 2.27400_02"
 }
