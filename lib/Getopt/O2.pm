@@ -630,7 +630,7 @@ Oliver Schieche E<lt>schiecheo@cpan.orgE<gt>
 
 http://perfect-co.de/
 
-$Id: OO.pm 887 2016-08-29 12:57:34Z schieche $
+$Id: O2.pm 888 2019-09-01 20:36:34Z schieche $
 
 =head1 LICENSE AND COPYRIGHT
 
