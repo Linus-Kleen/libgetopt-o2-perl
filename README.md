@@ -157,9 +157,9 @@ Consider the following ruleset:
 >     sub get_option_rules
 >     {
 >         return
->             'q|quiet'         => ['Be quiet', 'context' => '-logging'],
->             'v|verbose'           => ['Be verbose', 'context' => '+logging'],
->             'l|logfile=s'     => ['Log to file ARG', 'context' => 'logging']
+>             'q|quiet'     => ['Be quiet', 'context' => '-logging'],
+>             'v|verbose'   => ['Be verbose', 'context' => '+logging'],
+>             'l|logfile=s' => ['Log to file ARG', 'context' => 'logging']
 >     }
 
 The above example would introduce the _logging_ context; an internal state which
@@ -185,8 +185,6 @@ None special. Uses core perl libraries.
 Oliver Schieche <schiecheo@cpan.org>
 
 http://perfect-co.de/
-
-$Id: O2.pm 888 2019-09-01 20:36:34Z schieche $
 
 # LICENSE AND COPYRIGHT
 
