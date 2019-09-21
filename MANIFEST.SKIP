@@ -83,6 +83,9 @@
 # Avoid archives of this distribution
 \bGetopt-O2-
 
+# Avoid local files
+^local/
+
 # Avoid test/build artifacts
 ^blib
 ^_build
