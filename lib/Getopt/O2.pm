@@ -1,6 +1,4 @@
 ##------------------------------------------------------------------------------
-## $Id: O2.pm 887 2016-08-29 12:57:34Z schieche $
-##------------------------------------------------------------------------------
 package Getopt::O2;
 
 use 5.010;
@@ -736,8 +734,6 @@ None special. Uses core perl libraries.
 Oliver Schieche E<lt>schiecheo@cpan.orgE<gt>
 
 http://perfect-co.de/
-
-$Id: O2.pm 888 2019-09-01 20:36:34Z schieche $
 
 =head1 LICENSE AND COPYRIGHT
 
