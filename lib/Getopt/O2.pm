@@ -159,7 +159,7 @@ sub getopt ## no critic (Subroutines::ProhibitExcessComplexity)
 		$self->{'options'}->{$rule->long} = $arg;
 	}
 
-	$self->check_rule_obligations();
+	$self->check_rule_obligations(%context);
 
 	%$dest = %{$self->{'options'}};
 	@$args = @arguments if ref $args;
@@ -276,9 +276,9 @@ sub show_option_default_values
 sub check_rule_obligations
 {
 	my $self = shift;
+	my %context = @_;
 	my @missing = sort grep {
-		my $rule = $self->{'longOptions'}->{$_};
-		$rule->required && $rule->is_unused
+		is_rule_missing($self->{'longOptions'}->{$_}, %context)
 	} keys %{$self->{'longOptions'}};
 
 	return $self unless @missing;
@@ -289,6 +289,22 @@ sub check_rule_obligations
 		: sprintf '%s and %s', join(', ', @missing[0..$#missing-1]), $missing[-1];
 
 	return $self->usage(1, 'Missing required option%s %s.', $one ? '' : 's', $missing);
+}
+##------------------------------------------------------------------------------
+sub is_rule_missing
+{
+	my $rule = shift;
+	my %context = @_;
+
+	return unless $rule->required;
+	return unless $rule->is_unused;
+	return 1 unless $rule->context;
+
+	foreach (@{$rule->context->{'need'}}) {
+		return 1 if $context{$_};
+	}
+
+	return;
 }
 ##------------------------------------------------------------------------------
 sub usage ## no critic (Subroutines::ProhibitExcessComplexity)
