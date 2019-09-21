@@ -9,7 +9,7 @@ use warnings;
 
 no if $] >= 5.017011, warnings => 'experimental::smartmatch';
 
-our $VERSION = '1.0.20';
+our $VERSION = '1.1.0';
 ##------------------------------------------------------------------------------
 use English '-no_match_vars';
 use Readonly;
@@ -39,7 +39,7 @@ sub getopt ## no critic (Subroutines::ProhibitExcessComplexity)
 		my ($arg,$key,$rule,%context,@arguments);
 
 		$self->{'options'} = {%$dest};
-		$self->parseRules();
+		$self->parse_rules();
 
 		PROCESS_ARGUMENTS: while (@ARGV) {
 			$arg = shift @ARGV;
@@ -105,7 +105,7 @@ sub getopt ## no critic (Subroutines::ProhibitExcessComplexity)
 			} elsif(!defined $rule->type) {
 				$arg = undef;
 			} else {
-				$arg = $self->getValue();
+				$arg = $self->get_value();
 				$self->error('Option "--%s" needs a mandatory value.', $rule->long)
 					unless defined $arg;
 
@@ -164,7 +164,8 @@ sub error
 		return shift->usage(1, shift(), @_);
 	}
 ##------------------------------------------------------------------------------
-sub getProgram
+# Returns program name for display in usage
+sub get_program
 	{
 		my $program = $ENV{_};
 		$program =~ s{.*/([^/]+)$}{$1};
@@ -172,13 +173,14 @@ sub getProgram
 		return $program;
 	}
 ##------------------------------------------------------------------------------
-sub getProgramDescription
+# Return short program description string; displayed in usage
+sub get_program_description
 	{
 		my $class = ref $_[0];
-		return qq{another example of this programmer's lazyness: it forgot the description (and should implement ${class}::getProgramDescription())}
+		return qq{another example of this programmer's lazyness: it forgot the description (and should implement ${class}::get_program_description())}
 	}
 ##------------------------------------------------------------------------------
-sub getValue
+sub get_value
 	{
 		return unless @ARGV;
 		my $value = $ARGV[0];
@@ -192,7 +194,7 @@ sub getValue
 		return $value;
 	}
 ##------------------------------------------------------------------------------
-sub getOptionRules
+sub get_option_rules
 	{
 		my $self = shift;
 
@@ -202,10 +204,10 @@ sub getOptionRules
 		undef
 	}
 ##------------------------------------------------------------------------------
-sub parseRules ## no critic (Subroutines::ProhibitExcessComplexity)
+sub parse_rules ## no critic (Subroutines::ProhibitExcessComplexity)
 	{
 		my $self = shift;
-		my @rules = $self->getOptionRules();
+		my @rules = $self->get_option_rules();
 
 		## Perl Critic false positive on "$}" at the end of the reg-ex
 		## no critic (Variables::ProhibitPunctuationVars)
@@ -258,9 +260,9 @@ sub parseRules ## no critic (Subroutines::ProhibitExcessComplexity)
 		return @parsed;
 	}
 ##------------------------------------------------------------------------------
-sub showOptionDefaultValues
+sub show_option_default_values
 	{
-		return;
+		return 1;
 	}
 ##------------------------------------------------------------------------------
 sub usage ## no critic (Subroutines::ProhibitExcessComplexity)
@@ -271,22 +273,22 @@ sub usage ## no critic (Subroutines::ProhibitExcessComplexity)
 		if (defined $message) {
 			$message = sprintf "Error: $message", @args;
 		} else {
-			$message = sprintf '%s - %s', $self->getProgram(), $self->getProgramDescription();
+			$message = sprintf '%s - %s', $self->get_program(), $self->get_program_description();
 		}
 
 		print STDERR "$_\n"
-			foreach wrapString($message, 0, 8, $USAGE_MARGIN);
-		printf STDERR "\nUsage: %s [options...]\n\nValid options:\n\n", $self->getProgram();
+			foreach wrap_string($message, 0, 8, $USAGE_MARGIN);
+		printf STDERR "\nUsage: %s [options...]\n\nValid options:\n\n", $self->get_program();
 
 		## no critic (Variables::ProhibitLocalVars)
 		local $self->{'longOptions'} = undef;
 		local $self->{'shortOptions'} = undef;
 		## use critic
 
-		my @rules = $self->parseRules();
+		my @rules = $self->parse_rules();
 		my ($rule,$line,$long,$len,$show_default);
 
-		$show_default = $self->showOptionDefaultValues();
+		$show_default = $self->show_option_default_values();
 
 		PROCESS_RULES: while (@rules) {
 			#@type Getopt::O2::Rule
@@ -317,14 +319,14 @@ sub usage ## no critic (Subroutines::ProhibitExcessComplexity)
 			print STDERR $line;
 
 			print STDERR "$_\n"
-				foreach wrapString($rule->help($show_default), length $line, $USAGE_OPTIONS_LENGTH, $USAGE_MARGIN);
+				foreach wrap_string($rule->help($show_default), length $line, $USAGE_OPTIONS_LENGTH, $USAGE_MARGIN);
 		}
 
 		print STDERR "\n";
 		exit $exitCode;
 	}
 ##------------------------------------------------------------------------------
-sub wrapString
+sub wrap_string
 	{
 		my ($string,$firstIndent,$leftIndent,$wrapAt) = @_;
 		my (@lines,$len,$pos,$nChars);
@@ -478,58 +480,68 @@ Getopt::O2 - Command line argument processing and automated help generation, obj
 =head1 SYNOPSIS
 
   package MyPackage;
-  use base 'Getopt::O2';
+  use parent 'Getopt::O2';
 
   # return a short descriptive string about the program (appears in --help)
-  sub getProgramDescription
-      {
-          'A sample program'
-      }
+  sub get_program_description
+  {
+	  return 'A sample program';
+  }
 
   # return rules about parameters
-  sub getOptionRules
-      {
-          shift->SUPER::getOptionRules(),
-              'length=i' => ['A numeric argument', 'default' => 33],
-              'file=s'   => ['A text argument'],
-              'quiet'    => ['A "flag" argument'];
-      }
+  sub get_option_rules
+  {
+	  return shift->SUPER::get_option_rules(),
+		  'length=i' => ['A numeric argument', 'default' => 33],
+		  'file=s'   => ['A text argument'],
+		  'quiet'    => ['A "flag" argument'];
+  }
 
   # read options
-  new MyPackage->getopt(\%options);
+  new MyPackage->getopt(\my %options, \my @values);
 
 =head1 DESCRIPTION
 
 The C<Getopt::O2> module implements an extended C<Getopt> class which
-parses the command line from @ARGV, recognizing and removing specified options
+parses the command line from C<@ARGV>, recognizing and removing specified options
 and their possible values.
 
-This function adheres to the POSIX syntax for command line options, with GNU
+This module adheres to the POSIX syntax for command line options, with GNU
 extensions. In general, this means that options have long names instead of
 single letters, and are introduced with a double dash "--". Support for
 bundling of command line options, as was the case with the more traditional
 single-letter approach, is provided.
 
+C<Getopt::O2> stands out for its extensive usage generation feature; anything
+printed in its "usage" output is generated from the input options and saves the
+user the time to write usage output by themselves.
+
 =head2 Methods
 
 =over 4
 
-=item I<PACKAGE>->getopt(I<HASHREF>)
+=item I<PACKAGE>->getopt(I<HASHREF [, ARRAYREF]>)
 
 Processes command line options and stores their values in the hash reference
-passed as its argument.
+passed as its argument. Anything not recognized as parameters or their values is
+pushed into the second (optional) C<ARRAYREF>.
 
-=item I<PACKAGE>->getOptionRules()
+=item I<PACKAGE>->get_option_rules()
 
 Returns a list of rules of command line options. The base package provides two
 options C<--help> and C<--verbose> by default. The former calls C<usage()>; the
-latter is an I<incremental option>. See L<Writing Rules> for what your
+latter is an I<incremental option>. See L</"Writing Rules"> for what your
 implementation should return.
 
-=item I<PACKAGE>->getProgramDescription()
+=item I<PACKAGE>->get_program()
+
+Returns the program name for display in usage.
+
+=item I<PACKAGE>->get_program_description()
 
 Returns a short descriptive string about the program's functionality. This
-string is used as a caption of the generated program usage text.
+string is used as a caption of the generated program usage text and should be
+implemented by sub-modules using this module.
 
 =item I<PACKAGE>->usage(I<CODE [, MESSAGE [, LIST ] ]>)
 
@@ -606,7 +618,7 @@ option was seen on the command line.
 
 Defines an I<option with a mandatory value>. The character after the C<=> sign
 determines the expected value: C<s> is a generic string, C<i> is a numeric value
-(it uses Perl's L<looks_like_number>) and C<?> is an enumeration. If the type
+(it uses Perl's L<Scalar::Util/"looks_like_number">) and C<?> is an enumeration. If the type
 specifier is suffixed with a C<@>, the resulting value will be an ARRAYREF with
 all values.
 
